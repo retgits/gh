@@ -1,8 +1,8 @@
 # gh - a collection of git helper commands
 
-[![Travis](https://img.shields.io/travis/retgits/gh.svg?style=flat-square)]()
-[![license](https://img.shields.io/github/license/retgits/gh.svg?style=flat-square)]()
-[![release](https://img.shields.io/github/tag/retgits/gh.svg?style=flat-square)]()
+[![Travis](https://img.shields.io/travis/retgits/gh.svg?style=flat-square)](https://travis-ci.org/retgits/gh)
+[![license](https://img.shields.io/github/license/retgits/gh.svg?style=flat-square)](https://github.com/retgits/gh/blob/master/LICENSE)
+[![release](https://img.shields.io/github/release/retgits/gh.svg?style=flat-square)](https://github.com/retgits/gh/releases)
 
 A collection of git helper commands to make my life a little easier
 
