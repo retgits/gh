@@ -18,10 +18,12 @@ A collection of git helper commands to make my life a little easier`,
 }
 
 // Variables used in multiple flags
-var ()
+var (
+	base string
+)
 
 const (
-	version = "1.0.0"
+	version = "1.1.0"
 )
 
 // Execute adds all child commands to the root command and sets flags appropriately.

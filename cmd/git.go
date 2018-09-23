@@ -9,9 +9,9 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strings"
 	"text/template"
 
+	"github.com/retgits/gh/util"
 	"github.com/spf13/cobra"
 )
 
@@ -66,7 +66,7 @@ func runGit(cmd *cobra.Command, args []string) {
 				fmt.Println("Cannot find Gogs token from flags or environment")
 			}
 		}
-		createGogsRepository(base, gogsToken)
+		createRepository(base, gogsToken, "gogs")
 	}
 
 	// Get the GitHub token. The precedence is as follows:
@@ -79,7 +79,7 @@ func runGit(cmd *cobra.Command, args []string) {
 				fmt.Println("Cannot find GitHub token from flags or environment")
 			}
 		}
-		createGitHubRepository(base, githubToken)
+		createRepository(base, githubToken, "github")
 	}
 
 	// Create a Jenkins job.The precedence is as follows:
@@ -110,18 +110,7 @@ func createJenkinsJob(reponame string, jenkinsBase string, commit bool) {
 	s := buf.String()
 
 	// Write the template to disk
-	file, err := os.Create(filepath.Join(jenkinsBase, "projects", fmt.Sprintf("%s.groovy", reponame)))
-	if err != nil {
-		fmt.Printf("There was a problem creating the template file\n%s\n", err.Error())
-	}
-	defer file.Close()
-
-	_, err = file.WriteString(s)
-	if err != nil {
-		fmt.Printf("There was a problem writing the template file\n%s\n", err.Error())
-	}
-
-	err = file.Sync()
+	err := util.WriteFile(filepath.Join(jenkinsBase, "projects", fmt.Sprintf("%s.groovy", reponame)), s)
 	if err != nil {
 		fmt.Printf("There was a problem syncing the template file\n%s\n", err.Error())
 	}
@@ -139,24 +128,26 @@ func createJenkinsJob(reponame string, jenkinsBase string, commit bool) {
 	}
 }
 
-func createGitHubRepository(reponame string, token string) {
+func createRepository(reponame string, token string, origin string) {
 	// Prepare the payload
 	jsonString := fmt.Sprintf(`{"name":"%s"}`, reponame)
 
-	// Prepare the API request
-	req, err := http.NewRequest("POST", "https://api.github.com/user/repos", strings.NewReader(jsonString))
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("token %s", token))
+	// Prepare the HTTP headers
+	httpHeader := http.Header{"Authorization": {fmt.Sprintf("token %s", token)}}
 
-	// Prepare the HTTP client
-	client := &http.Client{}
+	// Set the URL based on the origin
+	var URL string
+	if origin == "github" {
+		URL = "https://api.github.com/user/repos"
+	} else {
+		URL = "http://ubusrvls.na.tibco.com:3000/api/v1/user/repos"
+	}
 
-	// Execute the HTTP request
-	resp, err := client.Do(req)
+	// Send the API call
+	resp, err := util.HTTPPost(URL, "application/json", jsonString, httpHeader)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	defer resp.Body.Close()
 
 	if resp.StatusCode != 201 {
 		fmt.Printf("GitHub did not response with HTTP/201\n")
@@ -165,32 +156,4 @@ func createGitHubRepository(reponame string, token string) {
 	}
 
 	fmt.Println(resp.Body)
-}
-
-func createGogsRepository(reponame string, token string) {
-	// Prepare the payload
-	jsonString := fmt.Sprintf(`{"name":"%s"}`, reponame)
-
-	// Prepare the API request
-	req, err := http.NewRequest("POST", "http://ubusrvls.na.tibco.com:3000/api/v1/user/repos", strings.NewReader(jsonString))
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("token %s", token))
-
-	fmt.Println(req)
-
-	// Prepare the HTTP client
-	client := &http.Client{}
-
-	// Execute the HTTP request
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 201 {
-		fmt.Printf("Gogs did not response with HTTP/201\n")
-		fmt.Printf("  HTTP StatusCode %v\n", resp.StatusCode)
-		fmt.Printf("  HTTP Body %v\n", resp.Body)
-	}
 }

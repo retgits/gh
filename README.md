@@ -1,5 +1,9 @@
 # gh - a collection of git helper commands
 
+[![Travis](https://img.shields.io/travis/retgits/gh.svg?style=flat-square)]()
+[![license](https://img.shields.io/github/license/retgits/gh.svg?style=flat-square)]()
+[![release](https://img.shields.io/github/tag/retgits/gh.svg?style=flat-square)]()
+
 A collection of git helper commands to make my life a little easier
 
 ## install
@@ -92,6 +96,7 @@ Usage:
   gh lambda [flags]
 
 Flags:
+      --base string   The root folder to create this lambda function in (optional, will default to current folder)
   -h, --help          help for lambda
       --name string   The name of the lambda function you want to create (required)
 ```

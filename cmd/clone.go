@@ -21,9 +21,7 @@ var cloneCmd = &cobra.Command{
 }
 
 // Flags
-var (
-	base string
-)
+var ()
 
 // init registers the command and flags
 func init() {
@@ -33,6 +31,11 @@ func init() {
 
 // runClone is the actual execution of the command
 func runClone(cmd *cobra.Command, args []string) {
+	// If the URL isn't provided as a commandline argument, stop processing
+	if len(args) < 1 {
+		fmt.Printf("Error: There was no URL provided\n%s", cmd.Long)
+		os.Exit(1)
+	}
 
 	// If the base flag wasn't specified check if an environment variable was set
 	if len(base) == 0 {
@@ -41,8 +44,7 @@ func runClone(cmd *cobra.Command, args []string) {
 		if !set {
 			dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 			if err != nil {
-				fmt.Printf("%s\n", err.Error())
-				fmt.Println(cmd.Long)
+				fmt.Printf("Error: %s\n%s", err.Error(), cmd.Long)
 				os.Exit(1)
 			}
 			base = dir
@@ -51,29 +53,29 @@ func runClone(cmd *cobra.Command, args []string) {
 		}
 	}
 
-	// Get the git URL
-	gitURL := strings.Split(os.Args[len(os.Args)-1], "/")
+	// Get the git URL and split it into URL segments
+	gitURL := strings.Split(args[0], "/")
 	if len(gitURL) < 4 {
-		fmt.Printf("Not enough arguments in %v\n\n", gitURL)
-		fmt.Println(cmd.Long)
+		fmt.Printf("Error: Not enough arguments in %v\n%s", gitURL, cmd.Long)
 		os.Exit(1)
 	}
+	// The gitOrigin represents the domain name of the git server (like github.com)
 	gitOrigin := gitURL[2]
+	// The gitUser respresents the repository owner (like retgits)
 	gitUser := gitURL[3]
+	// The gitRepo is the actual name of the repository
 	gitRepo := strings.Replace(gitURL[4], ".git", "", -1)
 
-	// Prepare the location
+	// localDir is the location on disk that the repository will be cloned to
 	localDir := filepath.Join(base, gitOrigin, gitUser, gitRepo)
 
 	// Clone the repository
-	fmt.Printf("git clone %s %s\n", os.Args[len(os.Args)-1], localDir)
-	command := exec.Command("git", "clone", os.Args[len(os.Args)-1], localDir)
+	command := exec.Command("git", "clone", args[0], localDir)
 	command.Stdout = os.Stdout
 	command.Stderr = os.Stderr
 	err := command.Run()
 	if err != nil {
-		fmt.Printf("%s\n", err.Error())
-		fmt.Println(cmd.Long)
+		fmt.Printf("Error: %s\n%s", err.Error(), cmd.Long)
 		os.Exit(1)
 	}
 }
