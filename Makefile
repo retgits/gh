@@ -2,31 +2,22 @@
 
 #--- Help ---
 help:
-	@echo Makefile for gh
-	@echo  
-	@echo usage: make [target]
 	@echo 
-	@echo Test targets:
-	@echo - test: Runs all test cases
+	@echo Makefile targets
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' Makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 	@echo 
-	@echo Setup targets:
-	@echo - prep: Make preparations to run tests
-	@echo - deps: Get all dependencies
-	@echo
-	@echo Run targets
-	@echo - install : Installs the executable in your GOPATH/bin	
 
 #--- Setup targets ---
-prep:
+prep: ## Make preparations to run the tests
 	mkdir -p test
-deps:
+deps: ## Get all the dependencies
 	go get -u github.com/spf13/cobra
 	go get -u github.com/stretchr/testify/assert
 
 #--- Test targets ---
-test:
+test: ## Run all testcases
 	export TESTDIR=`pwd`/test && go test ./...
 
 #--- Run targets ---
-install:
+install: ## Install the executable in your $GOPATH/bin folder
 	go install
