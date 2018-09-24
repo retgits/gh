@@ -23,6 +23,7 @@ Available Commands:
   git         a git helper command to create a GitHub and/or Gogs repository and optionally a Jenkins job as well.
   help        Help about any command
   lambda      a command to create a new AWS Lambda function based on my personal templates in the current folder.
+  travis      a command to update the AWS credentials on Travis-CI jobs.
 
 Flags:
   -h, --help      help for gh
@@ -100,3 +101,30 @@ Flags:
   -h, --help          help for lambda
       --name string   The name of the lambda function you want to create (required)
 ```
+
+### Travis
+
+```bash
+a command to update the AWS credentials on Travis-CI jobs.
+
+Usage:
+  gh travis [flags]
+
+Flags:
+  -h, --help                  help for travis
+      --owner string          The owner of the Travis-CI repos (required)
+      --repos string          The list of Travis-CI repos to update (optional, must be a comma separated list)
+      --travis-token string   The Authentication Token for Travis-CI (optional)
+```
+
+For the Travis-CI token. The precedence is as follows:
+
+* Flag   : travis-token
+* Env var: TRAVISTOKEN
+
+For the repo list. The precedence is as follows:
+
+* Flag   : repos
+* Env var: TRAVISREPOS
+
+The new values for **AWS_ACCESS_KEY_ID** and **AWS_SECRET_ACCESS_KEY** are retrieved using the `aws configure get` command.

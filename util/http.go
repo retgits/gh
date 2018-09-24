@@ -22,6 +22,11 @@ func HTTPPost(URL string, encoding string, postData string, header http.Header) 
 	return httpcall(URL, "POST", encoding, postData, header)
 }
 
+// HTTPPatch executes a PATCH request to a URL and returns the response body as a JSON object
+func HTTPPatch(URL string, encoding string, postData string, header http.Header) (HTTPResponse, error) {
+	return httpcall(URL, "PATCH", encoding, postData, header)
+}
+
 // HTTPGet executes a GET request to a URL and returns the response body as a JSON object
 func HTTPGet(URL string, encoding string, header http.Header) (HTTPResponse, error) {
 	return httpcall(URL, "GET", encoding, "", header)
