@@ -104,7 +104,7 @@ func runTravis(cmd *cobra.Command, args []string) {
 				if err != nil {
 					fmt.Println(err.Error())
 				}
-				fmt.Printf("Update of AWS_ACCESS_KEY_ID resulted in statuscode %d", resp.StatusCode)
+				fmt.Printf("Update of AWS_ACCESS_KEY_ID resulted in statuscode %d\n", resp.StatusCode)
 			} else if envVar["name"] == "AWS_SECRET_ACCESS_KEY" {
 				// Prepare the payload
 				jsonString := fmt.Sprintf(`{"env_var.value":"%s","env_var.public":"false"}`, secretKey)
@@ -115,7 +115,7 @@ func runTravis(cmd *cobra.Command, args []string) {
 				if err != nil {
 					fmt.Println(err.Error())
 				}
-				fmt.Printf("Update of AWS_SECRET_ACCESS_KEY resulted in statuscode %d", resp.StatusCode)
+				fmt.Printf("Update of AWS_SECRET_ACCESS_KEY resulted in statuscode %d\n", resp.StatusCode)
 			}
 		}
 	}
