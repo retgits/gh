@@ -24,11 +24,10 @@ var gitCmd = &cobra.Command{
 
 // Flags
 var (
-	github      bool
+	ghub        bool
 	gogs        bool
 	jenkins     bool
 	commit      bool
-	githubToken string
 	gogsToken   string
 	jenkinsBase string
 )
@@ -36,7 +35,7 @@ var (
 // init registers the command and flags
 func init() {
 	rootCmd.AddCommand(gitCmd)
-	gitCmd.Flags().BoolVar(&github, "github", false, "Create a GitHub repository for this project")
+	gitCmd.Flags().BoolVar(&ghub, "github", false, "Create a GitHub repository for this project")
 	gitCmd.Flags().BoolVar(&gogs, "gogs", false, "Create a Gogs repository for this project")
 	gitCmd.Flags().BoolVar(&jenkins, "jenkins", false, "Create a Jenkins DSL for this project")
 	gitCmd.Flags().BoolVar(&commit, "commit", false, "Commit and push the updates to the Jenkins DSL project")
@@ -72,7 +71,7 @@ func runGit(cmd *cobra.Command, args []string) {
 	// Get the GitHub token. The precedence is as follows:
 	// 1) Flag   : github-token
 	// 2) Env var: GITHUBTOKEN
-	if github {
+	if ghub {
 		if len(githubToken) == 0 {
 			githubToken = os.Getenv("GITHUBTOKEN")
 			if len(githubToken) == 0 {

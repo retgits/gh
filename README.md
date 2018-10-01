@@ -20,6 +20,7 @@ Usage:
 
 Available Commands:
   clone       a simple git clone command to make sure that all git clones end up in a specified directory.
+  dash        a command to update the snippets in Dash with GitHub gists.
   git         a git helper command to create a GitHub and/or Gogs repository and optionally a Jenkins job as well.
   help        Help about any command
   lambda      a command to create a new AWS Lambda function based on my personal templates in the current folder.
@@ -50,6 +51,26 @@ Flags:
       --base string   The root folder to clone this repo in (optional, unless $GITBASEFOLDER is set)
   -h, --help          help for clone
 ```
+
+### Dash
+
+```bash
+a command to update the snippets in Dash with GitHub gists.
+
+Usage:
+  gh dash [flags]
+
+Flags:
+      --github-token string   The Personal Access Token for GitHub (optional)
+  -h, --help                  help for dash
+      --lib string            The full path to the library.dash file (like /Users/username/Library/Application Support/Dash/library.dash)
+      --owner string          The GitHub username to get gists for (required)
+```
+
+For the GitHub token. The precedence is as follows:
+
+* Flag   : github-token
+* Env var: GITHUBTOKEN
 
 ### Git
 

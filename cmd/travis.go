@@ -24,7 +24,6 @@ var travisCmd = &cobra.Command{
 var (
 	travisToken string
 	repoList    string
-	repoOwner   string
 )
 
 // init registers the command and flags
