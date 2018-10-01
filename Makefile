@@ -13,8 +13,9 @@ prep: ## Make preparations to run the tests
 deps: ## Get all the dependencies
 	go get -u github.com/spf13/cobra
 	go get -u github.com/stretchr/testify/assert
-	go get -u github.com/google/go-github/v18/github
 	go get -u github.com/mattn/go-sqlite3
+	# TODO: This needs to be changed once Travis supports Go mods too
+	go get -u github.com/google/go-github/...
 
 #--- Test targets ---
 test: ## Run all testcases
