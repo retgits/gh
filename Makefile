@@ -13,6 +13,8 @@ prep: ## Make preparations to run the tests
 deps: ## Get all the dependencies
 	go get -u github.com/spf13/cobra
 	go get -u github.com/stretchr/testify/assert
+	go get -u github.com/google/go-github/v18/github
+	go get -u github.com/mattn/go-sqlite3
 
 #--- Test targets ---
 test: ## Run all testcases
