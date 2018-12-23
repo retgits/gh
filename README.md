@@ -100,7 +100,15 @@ Flags:
 ### Credit
 
 ```bash
+A very slightly quicker way to credit an author on the latest commit
 
+Usage:
+  gh credit [flags]
+
+Flags:
+      --email string   The email address of the author to credit (required)
+  -h, --help           help for credit
+      --name string    The name of the author to credit (required)
 ```
 
 ### Dash
