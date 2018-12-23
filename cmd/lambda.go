@@ -16,7 +16,7 @@ import (
 // lambdaCmd represents the lambda command
 var lambdaCmd = &cobra.Command{
 	Use:   "lambda",
-	Short: "a command to create a new AWS Lambda function based on my personal templates in the current folder.",
+	Short: "Create a new AWS Lambda function based on my personal templates in the current folder.",
 	Run:   runLambda,
 	Long:  "\ngh lambda is a command to create a new AWS Lambda function based on my personal templates in the current folder\n\nSample usage: gh lambda my-lambda\nThis will create a new AWS Lambda function in the my-lambda folder of this directory\n\n",
 }

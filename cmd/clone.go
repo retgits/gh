@@ -15,7 +15,7 @@ import (
 // cloneCmd represents the clone command
 var cloneCmd = &cobra.Command{
 	Use:   "clone",
-	Short: "a simple git clone command to make sure that all git clones end up in a specified directory.",
+	Short: "Clone a repository to a specified directory",
 	Run:   runClone,
 	Long:  "\ngh clone is a simple git clone command to make sure that all git clones end up in a specified\ndirectory. The directory is specified by\n1) setting a flag `base` (gh clone --base . https://github.com/retgits/gh)\n2) setting an environment variable `GITBASEFOLDER`\n3) the current directory\n\nSample usage: gh clone https://github.com/retgits/gh\n\n",
 }

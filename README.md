@@ -11,7 +11,7 @@ A collection of git helper commands to make my life a little easier
 ## install
 
 ```bash
-$ go get -u github.com/retgits/gh
+go get -u github.com/retgits/gh
 ```
 
 ## Usage
@@ -21,18 +21,48 @@ Usage:
   gh [command]
 
 Available Commands:
-  clone       a simple git clone command to make sure that all git clones end up in a specified directory.
-  dash        a command to update the snippets in Dash with GitHub gists.
-  git         a git helper command to create a GitHub and/or Gogs repository and optionally a Jenkins job as well.
+  all         Stage all unstaged files
+  amend       Use the last commit message and amend your stuffs
+  clone       Clone a repository to a specified directory
+  commit      A simpler alias for "git commit -a -S -m"
+  credit      A very slightly quicker way to credit an author on the latest commit
+  dash        Update the snippets in Dash with GitHub gists
+  git         Create GitHub and/or Gogs repositories and optionally a Jenkins job as well.
   help        Help about any command
-  lambda      a command to create a new AWS Lambda function based on my personal templates in the current folder.
-  travis      a command to update the AWS credentials on Travis-CI jobs.
+  lambda      Create a new AWS Lambda function based on my personal templates in the current folder.
+  nuke        Removes a branch locally and on the remote origin
+  travis      Update the AWS credentials on Travis-CI jobs.
+  undo        Undo the last commit, but don't throw away any changes
 
 Flags:
   -h, --help      help for gh
       --version   version for gh
 
 Use "gh [command] --help" for more information about a command.
+```
+
+### All
+
+```bash
+Stage all unstaged files
+
+Usage:
+  gh all [flags]
+
+Flags:
+  -h, --help   help for all
+```
+
+### Amend
+
+```bash
+Use the last commit message and amend your stuffs
+
+Usage:
+  gh amend [flags]
+
+Flags:
+  -h, --help   help for amend
 ```
 
 ### Clone
@@ -52,6 +82,25 @@ Usage:
 Flags:
       --base string   The root folder to clone this repo in (optional, unless $GITBASEFOLDER is set)
   -h, --help          help for clone
+```
+
+### Commit
+
+```bash
+A simpler alias for "git commit -a -S -m"
+
+Usage:
+  gh commit [flags]
+
+Flags:
+  -h, --help             help for commit
+      --message string   The commit message (required)
+```
+
+### Credit
+
+```bash
+
 ```
 
 ### Dash
@@ -125,6 +174,19 @@ Flags:
       --name string   The name of the lambda function you want to create (required)
 ```
 
+### Nuke
+
+```bash
+Removes a branch locally and on the remote origin
+
+Usage:
+  gh nuke [flags]
+
+Flags:
+      --branch string   The Nuke message (required)
+  -h, --help            help for nuke
+```
+
 ### Travis
 
 ```bash
@@ -151,3 +213,7 @@ For the repo list. The precedence is as follows:
 * Env var: TRAVISREPOS
 
 The new values for **AWS_ACCESS_KEY_ID** and **AWS_SECRET_ACCESS_KEY** are retrieved using the `aws configure get` command.
+
+## License
+
+See the [LICENSE](./LICENSE) file in the repository

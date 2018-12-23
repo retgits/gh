@@ -12,11 +12,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// gitAllCmd represents the git command
-var gitAllCmd = &cobra.Command{
-	Use:   "all",
-	Short: "Stage all unstaged files",
-	Run:   runGitAll,
+// gitUndoCmd represents the git command
+var gitUndoCmd = &cobra.Command{
+	Use:   "undo",
+	Short: "Undo the last commit, but don't throw away any changes",
+	Run:   runGitUndo,
 }
 
 // Flags
@@ -24,17 +24,17 @@ var ()
 
 // init registers the command and flags
 func init() {
-	rootCmd.AddCommand(gitAllCmd)
+	rootCmd.AddCommand(gitUndoCmd)
 }
 
-// runGitAll is the actual execution of the command
-func runGitAll(cmd *cobra.Command, args []string) {
+// runGitUndo is the actual execution of the command
+func runGitUndo(cmd *cobra.Command, args []string) {
 	currentDirectory, err := util.GetCurrentDirectory()
 	if err != nil {
 		fmt.Printf("An error occured while resolving current directory: %s", err.Error())
 		os.Exit(2)
 	}
-	cmdExec := exec.Command("sh", "-c", "git add -A")
+	cmdExec := exec.Command("sh", "-c", "git reset --soft HEAD^")
 	cmdExec.Stdout = os.Stdout
 	cmdExec.Stderr = os.Stderr
 	cmdExec.Dir = currentDirectory

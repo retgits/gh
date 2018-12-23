@@ -20,7 +20,7 @@ import (
 // dashCmd represents the dash command
 var dashCmd = &cobra.Command{
 	Use:   "dash",
-	Short: "a command to update the snippets in Dash with GitHub gists.",
+	Short: "Update the snippets in Dash with GitHub gists",
 	Run:   runDash,
 }
 

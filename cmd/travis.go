@@ -16,7 +16,7 @@ import (
 // travisCmd represents the travis command
 var travisCmd = &cobra.Command{
 	Use:   "travis",
-	Short: "a command to update the AWS credentials on Travis-CI jobs.",
+	Short: "Update the AWS credentials on Travis-CI jobs.",
 	Run:   runTravis,
 }
 
