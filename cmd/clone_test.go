@@ -31,15 +31,12 @@ func TestClone(t *testing.T) {
 	cmd.Stdout = &outbuf
 	cmd.Stderr = &errbuf
 
-	// Unset the environment variable in case it was set
-	os.Unsetenv("GITBASEFOLDER")
-
 	err := cmd.Run()
 	if err != nil && !strings.Contains(err.Error(), "exit status 1") {
 		fmt.Println(err.Error())
 	}
 	stdout := outbuf.String()
-	assert.Contains(stdout, "Error: There was no URL provided")
+	assert.Contains(stdout, "no basefolder set in .ghconfig and no --basefolder flag specified")
 	outbuf.Reset()
 	errbuf.Reset()
 }
@@ -51,20 +48,17 @@ func TestCloneWithBaseFlag(t *testing.T) {
 	var outbuf, errbuf bytes.Buffer
 
 	// base flags set
-	currentCmd := append(cloneCommand, "--base", os.Getenv("TESTDIR"))
+	currentCmd := append(cloneCommand, "--basefolder", os.Getenv("TESTDIR"))
 	cmd := exec.Command("go", currentCmd...)
 	cmd.Stdout = &outbuf
 	cmd.Stderr = &errbuf
-
-	// Unset the environment variable in case it was set
-	os.Unsetenv("GITBASEFOLDER")
 
 	err := cmd.Run()
 	if err != nil && !strings.Contains(err.Error(), "exit status 1") {
 		fmt.Println(err.Error())
 	}
 	stdout := outbuf.String()
-	assert.Contains(stdout, "Error: There was no URL provided")
+	assert.Contains(stdout, "no URL provided to clone")
 	outbuf.Reset()
 	errbuf.Reset()
 }
@@ -76,47 +70,17 @@ func TestCloneWithBaseFlagAndURL(t *testing.T) {
 	var outbuf, errbuf bytes.Buffer
 
 	// base flags set
-	currentCmd := append(cloneCommand, "--base", os.Getenv("TESTDIR"), tmpCloneRepo)
+	currentCmd := append(cloneCommand, "--basefolder", os.Getenv("TESTDIR"), tmpCloneRepo)
 	cmd := exec.Command("go", currentCmd...)
 	cmd.Stdout = &outbuf
 	cmd.Stderr = &errbuf
-
-	// Unset the environment variable in case it was set
-	os.Unsetenv("GITBASEFOLDER")
 
 	err := cmd.Run()
 	if err != nil && !strings.Contains(err.Error(), "exit status 1") {
 		fmt.Println(err.Error())
 	}
 	stdout := outbuf.String()
-	assert.NotContains(stdout, "gh clone is a simple git clone command")
-	assert.FileExists(filepath.Join(os.Getenv("TESTDIR"), "github.com", "retgits", "grpcrest-proxy", "LICENSE"))
-	outbuf.Reset()
-	errbuf.Reset()
-	os.RemoveAll(filepath.Join(os.Getenv("TESTDIR"), "github.com"))
-}
-
-func TestCloneWithBaseFolderAndURL(t *testing.T) {
-	fmt.Println("TestCloneWithBaseFolderAndURL")
-	assert := assert.New(t)
-
-	var outbuf, errbuf bytes.Buffer
-
-	// base flags set
-	currentCmd := append(cloneCommand, tmpCloneRepo)
-	cmd := exec.Command("go", currentCmd...)
-	cmd.Stdout = &outbuf
-	cmd.Stderr = &errbuf
-
-	// Update or set the environment variable in case it was set
-	os.Setenv("GITBASEFOLDER", os.Getenv("TESTDIR"))
-
-	err := cmd.Run()
-	if err != nil && !strings.Contains(err.Error(), "exit status 1") {
-		fmt.Println(err.Error())
-	}
-	stdout := outbuf.String()
-	assert.NotContains(stdout, "gh clone is a simple git clone command")
+	assert.NotContains(stdout, "clone makes sure repositories are cloned to a specified base directory")
 	assert.FileExists(filepath.Join(os.Getenv("TESTDIR"), "github.com", "retgits", "grpcrest-proxy", "LICENSE"))
 	outbuf.Reset()
 	errbuf.Reset()
