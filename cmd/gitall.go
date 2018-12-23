@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// gitAllCmd represents the git command
+// gitAllCmd represents the all command
 var gitAllCmd = &cobra.Command{
 	Use:   "all",
 	Short: "Stage all unstaged files",

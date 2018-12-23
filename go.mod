@@ -1,14 +1,14 @@
 module github.com/retgits/gh
 
 require (
-	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/google/go-github/v18 v18.2.0
+	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/jmoiron/sqlx v0.0.0-20180614180643-0dae4fefe7c0
-	github.com/mattn/go-sqlite3 v1.9.0
-	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/kr/pretty v0.1.0 // indirect
+	github.com/mitchellh/go-homedir v1.0.0
+	github.com/spf13/afero v1.2.0 // indirect
 	github.com/spf13/cobra v0.0.3
-	github.com/spf13/pflag v1.0.2 // indirect
+	github.com/spf13/viper v1.3.1
 	github.com/stretchr/testify v1.2.2
-	golang.org/x/oauth2 v0.0.0-20180821212333-d2e6202438be
+	golang.org/x/sys v0.0.0-20181221143128-b4a75ba826a6 // indirect
+	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 )

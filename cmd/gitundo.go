@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// gitUndoCmd represents the git command
+// gitUndoCmd represents the undo command
 var gitUndoCmd = &cobra.Command{
 	Use:   "undo",
 	Short: "Undo the last commit, but don't throw away any changes",

@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// gitNukeCmd represents the git command
+// gitNukeCmd represents the nuke command
 var gitNukeCmd = &cobra.Command{
 	Use:   "nuke",
 	Short: "Removes a branch locally and on the remote origin",

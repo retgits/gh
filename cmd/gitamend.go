@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// gitAmendCmd represents the git command
+// gitAmendCmd represents the amend command
 var gitAmendCmd = &cobra.Command{
 	Use:   "amend",
 	Short: "Use the last commit message and amend your stuffs",

@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"os"
 
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -17,15 +19,19 @@ var rootCmd = &cobra.Command{
 A collection of git helper commands to make my life a little easier`,
 }
 
-// Variables used in multiple flags
-var (
-	base        string
-	githubToken string
-	repoOwner   string
+// The constants
+const (
+	// The version number of gh
+	version = "1.4.0"
+	// The name of the config file
+	ConfigName = ".ghconfig"
+	// The type of the config file
+	ConfigType = "yml"
 )
 
-const (
-	version = "1.4.0"
+// Variables used in multiple flags
+var (
+	cfgFile string
 )
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -38,6 +44,35 @@ func Execute() {
 }
 
 func init() {
+	// Specify the configuration file and init method
+	cobra.OnInitialize(initConfig)
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.ghconfig.yml)")
+
+	// Set the version and template function to render the version text
 	rootCmd.Version = version
 	rootCmd.SetVersionTemplate("\nYou're running gh version {{.Version}}\n\n")
+}
+
+func initConfig() {
+	// Read the configuration file
+	if cfgFile != "" {
+		// Use config file from the flag.
+		viper.SetConfigFile(cfgFile)
+	} else {
+		// Find home directory.
+		home, err := homedir.Dir()
+		if err != nil {
+			fmt.Printf("fatal locating $HOME directory: %s\n", err)
+			os.Exit(1)
+		}
+
+		// Search .ghconfig.yml in home directory
+		viper.AddConfigPath(home)
+		viper.SetConfigName(ConfigName)
+		viper.SetConfigType(ConfigType)
+	}
+
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Printf("error reading config file: %s\nrelying on flags for configuration\n\n", err)
+	}
 }

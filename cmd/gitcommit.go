@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// gitCommitCmd represents the git command
+// gitCommitCmd represents the commit command
 var gitCommitCmd = &cobra.Command{
 	Use:   "commit",
 	Short: "A simpler alias for \"git commit -a -S -m\"",

@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// gitCreditCmd represents the git command
+// gitCreditCmd represents the credit command
 var gitCreditCmd = &cobra.Command{
 	Use:   "credit",
 	Short: "A very slightly quicker way to credit an author on the latest commit",

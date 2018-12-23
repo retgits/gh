@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // cloneCmd represents the clone command
@@ -17,48 +18,43 @@ var cloneCmd = &cobra.Command{
 	Use:   "clone",
 	Short: "Clone a repository to a specified directory",
 	Run:   runClone,
-	Long:  "\ngh clone is a simple git clone command to make sure that all git clones end up in a specified\ndirectory. The directory is specified by\n1) setting a flag `base` (gh clone --base . https://github.com/retgits/gh)\n2) setting an environment variable `GITBASEFOLDER`\n3) the current directory\n\nSample usage: gh clone https://github.com/retgits/gh\n\n",
+	Long:  "\nclone makes sure repositories are cloned to a specified base directory and a predefined structure:\n  <basefolder>/<git site>/<user>/<repo> (like /home/user/github.com/retgits/gh). The basefolder is\n  set by the git.basefolder in .ghconfig.yml or the --basefolder flag\n\nsample usage: gh clone https://github.com/retgits/gh\n\n",
 }
 
 // Flags
-var ()
+var (
+	basefolder string
+)
 
 // init registers the command and flags
 func init() {
 	rootCmd.AddCommand(cloneCmd)
-	cloneCmd.Flags().StringVar(&base, "base", "", "The root folder to clone this repo in (optional, unless $GITBASEFOLDER is set)")
+	cloneCmd.Flags().StringVar(&basefolder, "basefolder", "", "The root folder to clone to (this flag overrides git.basefolder from the configuration file)")
+	viper.BindPFlag("git.basefolder", cloneCmd.Flags().Lookup("basefolder"))
 }
 
 // runClone is the actual execution of the command
 func runClone(cmd *cobra.Command, args []string) {
-	// If the URL isn't provided as a commandline argument, stop processing
-	if len(args) < 1 {
-		fmt.Printf("Error: There was no URL provided\n%s", cmd.Long)
+	// Set the basefolder to clone to
+	basefolder = viper.GetString("git.basefolder")
+	if len(basefolder) == 0 {
+		fmt.Printf("no basefolder set in .ghconfig and no --basefolder flag specified\n%s", cmd.Long)
 		os.Exit(1)
 	}
 
-	// If the base flag wasn't specified check if an environment variable was set
-	if len(base) == 0 {
-		// Get the base directory
-		envVar, set := os.LookupEnv("GITBASEFOLDER")
-		if !set {
-			dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-			if err != nil {
-				fmt.Printf("Error: %s\n%s", err.Error(), cmd.Long)
-				os.Exit(1)
-			}
-			base = dir
-		} else {
-			base = envVar
-		}
+	// If the URL isn't provided as a commandline argument, stop processing
+	if len(args) < 1 {
+		fmt.Printf("no URL provided to clone\n%s", cmd.Long)
+		os.Exit(1)
 	}
 
 	// Get the git URL and split it into URL segments
 	gitURL := strings.Split(args[0], "/")
 	if len(gitURL) < 4 {
-		fmt.Printf("Error: Not enough arguments in %v\n%s", gitURL, cmd.Long)
+		fmt.Printf("not enough arguments provided in %v\n%s", gitURL, cmd.Long)
 		os.Exit(1)
 	}
+
 	// The gitOrigin represents the domain name of the git server (like github.com)
 	gitOrigin := gitURL[2]
 	// The gitUser respresents the repository owner (like retgits)
@@ -67,7 +63,7 @@ func runClone(cmd *cobra.Command, args []string) {
 	gitRepo := strings.Replace(gitURL[4], ".git", "", -1)
 
 	// localDir is the location on disk that the repository will be cloned to
-	localDir := filepath.Join(base, gitOrigin, gitUser, gitRepo)
+	localDir := filepath.Join(basefolder, gitOrigin, gitUser, gitRepo)
 
 	// Clone the repository
 	command := exec.Command("git", "clone", args[0], localDir)
@@ -75,7 +71,7 @@ func runClone(cmd *cobra.Command, args []string) {
 	command.Stderr = os.Stderr
 	err := command.Run()
 	if err != nil {
-		fmt.Printf("Error: %s\n%s", err.Error(), cmd.Long)
+		fmt.Printf("error running git clone command: %s\n%s", err.Error(), cmd.Long)
 		os.Exit(1)
 	}
 }
