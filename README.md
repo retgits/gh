@@ -4,6 +4,8 @@
 [![license](https://img.shields.io/github/license/retgits/gh.svg?style=flat-square)](https://github.com/retgits/gh/blob/master/LICENSE)
 [![release](https://img.shields.io/github/release/retgits/gh.svg?style=flat-square)](https://github.com/retgits/gh/releases)
 
+![gh](./gh.png)
+
 A collection of git helper commands to make my life a little easier
 
 ## install
