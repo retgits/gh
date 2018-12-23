@@ -25,7 +25,7 @@ var (
 )
 
 const (
-	version = "1.3.0"
+	version = "1.4.0"
 )
 
 // Execute adds all child commands to the root command and sets flags appropriately.

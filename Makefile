@@ -10,6 +10,7 @@ help:
 #--- Setup targets ---
 prep: ## Make preparations to run the tests
 	mkdir -p test
+
 deps: ## Get all the dependencies
 	go get -u github.com/spf13/cobra
 	go get -u github.com/stretchr/testify/assert
