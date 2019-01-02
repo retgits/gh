@@ -1,5 +1,5 @@
 // Package cmd defines and implements command-line commands and flags
-// used by fdio. Commands and flags are implemented using Cobra.
+// used by gh. Commands and flags are implemented using Cobra.
 package cmd
 
 import (
@@ -38,6 +38,5 @@ func runGitAll(cmd *cobra.Command, args []string) {
 	cmdExec.Stdout = os.Stdout
 	cmdExec.Stderr = os.Stderr
 	cmdExec.Dir = currentDirectory
-	fmt.Println(currentDirectory)
 	cmdExec.Run()
 }

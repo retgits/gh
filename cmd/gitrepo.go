@@ -1,5 +1,5 @@
 // Package cmd defines and implements command-line commands and flags
-// used by fdio. Commands and flags are implemented using Cobra.
+// used by gh. Commands and flags are implemented using Cobra.
 package cmd
 
 import (

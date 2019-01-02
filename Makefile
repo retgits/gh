@@ -39,6 +39,7 @@ deps: ## Get all the Go dependencies.
 	go get -u ./...
 
 #--- Test targets ---
+.PHONY: test
 test: ## Run all testcases.
 	env TESTDIR=${TESTDIR} go test -race ./...
 
@@ -46,7 +47,7 @@ test-cover-html: ## Run all test cases and generate a coverage report.
 	@echo "mode: count" > coverage-all.out
 
 	$(foreach pkg, $(PACKAGES),\
-	go test -coverprofile=coverage.out -covermode=count $(pkg);\
+	env TESTDIR=${TESTDIR} go test -coverprofile=coverage.out -covermode=count $(pkg);\
 	tail -n +2 coverage.out >> coverage-all.out;)
 	go tool cover -html=coverage-all.out -o out/coverage.html
 

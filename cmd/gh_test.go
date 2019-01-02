@@ -5,9 +5,7 @@ package cmd_test
 import (
 	"bytes"
 	"fmt"
-	"os"
 	"os/exec"
-	"path/filepath"
 	"strings"
 	"testing"
 
@@ -15,18 +13,17 @@ import (
 )
 
 var (
-	cloneCommand = []string{"run", "../main.go", "clone"}
-	tmpCloneRepo = "https://github.com/retgits/grpcrest-proxy"
+	ghCommand = []string{"run", "../main.go"}
 )
 
-func TestClone(t *testing.T) {
-	fmt.Println("TestClone")
+func TestGH(t *testing.T) {
+	fmt.Println("TestGH")
 	assert := assert.New(t)
 
 	var outbuf, errbuf bytes.Buffer
 
 	// no flags set
-	currentCmd := cloneCommand
+	currentCmd := ghCommand
 	cmd := exec.Command("go", currentCmd...)
 	cmd.Stdout = &outbuf
 	cmd.Stderr = &errbuf
@@ -36,19 +33,20 @@ func TestClone(t *testing.T) {
 		fmt.Println(err.Error())
 	}
 	stdout := outbuf.String()
-	assert.Contains(stdout, "no URL provided to clone")
+	assert.Contains(stdout, "A collection of git helper commands to make my life a little easier")
+	assert.Contains(stdout, "--version         version for gh")
 	outbuf.Reset()
 	errbuf.Reset()
 }
 
-func TestCloneWithBaseFlag(t *testing.T) {
-	fmt.Println("TestCloneWithBaseFlag")
+func TestGHWithVersion(t *testing.T) {
+	fmt.Println("TestGHWithVersion")
 	assert := assert.New(t)
 
 	var outbuf, errbuf bytes.Buffer
 
-	// base flag set
-	currentCmd := append(cloneCommand, "--basefolder", os.Getenv("TESTDIR"))
+	// version flag set
+	currentCmd := append(ghCommand, "--version")
 	cmd := exec.Command("go", currentCmd...)
 	cmd.Stdout = &outbuf
 	cmd.Stderr = &errbuf
@@ -58,19 +56,19 @@ func TestCloneWithBaseFlag(t *testing.T) {
 		fmt.Println(err.Error())
 	}
 	stdout := outbuf.String()
-	assert.Contains(stdout, "no URL provided to clone")
+	assert.Contains(stdout, "You're running gh version 1.4.0")
 	outbuf.Reset()
 	errbuf.Reset()
 }
 
-func TestCloneWithBaseFlagAndURL(t *testing.T) {
-	fmt.Println("TestCloneWithBaseFlagAndURL")
+func TestGHWithHelp(t *testing.T) {
+	fmt.Println("TestGHWithHelp")
 	assert := assert.New(t)
 
 	var outbuf, errbuf bytes.Buffer
 
-	// base flag set and url provided
-	currentCmd := append(cloneCommand, "--basefolder", os.Getenv("TESTDIR"), tmpCloneRepo)
+	// help flag set
+	currentCmd := append(ghCommand, "--help")
 	cmd := exec.Command("go", currentCmd...)
 	cmd.Stdout = &outbuf
 	cmd.Stderr = &errbuf
@@ -80,9 +78,8 @@ func TestCloneWithBaseFlagAndURL(t *testing.T) {
 		fmt.Println(err.Error())
 	}
 	stdout := outbuf.String()
-	assert.NotContains(stdout, "clone makes sure repositories are cloned to a specified base directory")
-	assert.FileExists(filepath.Join(os.Getenv("TESTDIR"), "github.com", "retgits", "grpcrest-proxy", "LICENSE"))
+	assert.Contains(stdout, "A collection of git helper commands to make my life a little easier")
+	assert.Contains(stdout, "Use \"gh [command] --help\" for more information about a command.")
 	outbuf.Reset()
 	errbuf.Reset()
-	os.RemoveAll(filepath.Join(os.Getenv("TESTDIR"), "github.com"))
 }
