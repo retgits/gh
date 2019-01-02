@@ -35,7 +35,7 @@ func init() {
 func runGitCommit(cmd *cobra.Command, args []string) {
 	currentDirectory, err := util.GetCurrentDirectory()
 	if err != nil {
-		fmt.Printf("An error occured while resolving current directory: %s", err.Error())
+		fmt.Printf("An error occurred while resolving current directory: %s", err.Error())
 		os.Exit(2)
 	}
 	cmdExec := exec.Command("sh", "-c", fmt.Sprintf("git commit -a -S -m \"%s\"", gitCommitMessage))
