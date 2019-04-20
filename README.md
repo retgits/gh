@@ -1,18 +1,24 @@
 # gh - a collection of git helper commands
 
 [![Travis](https://img.shields.io/travis/retgits/gh.svg?style=flat-square)](https://travis-ci.org/retgits/gh)
-[![license](https://img.shields.io/github/license/retgits/gh.svg?style=flat-square)](https://github.com/retgits/gh/blob/master/LICENSE)
-[![release](https://img.shields.io/github/release/retgits/gh.svg?style=flat-square)](https://github.com/retgits/gh/releases)
+[![License](https://img.shields.io/github/license/retgits/gh.svg?style=flat-square)](https://github.com/retgits/gh/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/release/retgits/gh.svg?style=flat-square)](https://github.com/retgits/gh/releases)
+[![Go Report Card](https://goreportcard.com/badge/github.com/retgits/gh)](https://goreportcard.com/report/github.com/retgits/gh)
+[![Stability](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 ![gh](./gh.png)
 
-A collection of git helper commands to make my life a little easier
+`gh` is a collection of git helper commands to make my life a little easier. The command-line tool wraps a number of git commands that I frequently use.
 
 ## Install
+
+To install `gh` from source, run
 
 ```bash
 go get -u github.com/retgits/gh
 ```
+
+Or get a release version from the [releases](./releases) tab.
 
 ## Configuration
 
@@ -21,10 +27,11 @@ Configuration is done using flags for the commands, or using the `.ghconfig.yml`
 ```yml
 git:
   basefolder:  ## The base folder to clone repositories to
-  ghtoken:     ## The personal access token to connect to GitHub
-  gogstoken:   ## The personal access token to connect to Gogs
-  gogsurl:     ## The URL of the Gogs server
-  jenkinsrepo: ## The location of the Jenkins Job DSL repo on disk
+github:
+  accesstoken: ## The personal access token to connect to GitHub
+gogs:
+  accesstoken: ## The personal access token to connect to Gogs
+  apiendpoint: ## The API endpoint  of the Gogs server (like http://localhost/api/v1)
 ```
 
 ## Usage
@@ -38,12 +45,10 @@ Available Commands:
   amend       Use the last commit message and amend your stuffs
   clone       Clone a repository to a specified directory
   commit      A simpler alias for "git commit -a -S -m"
+  create-repo Create a repository
   credit      A very slightly quicker way to credit an author on the latest commit
-  github      Create a GitHub repository
-  gogs        Create a Gogs repository
   help        Help about any command
-  jenkins     Create a Jenkins Job
-  nuke        Removes a branch locally and on the remote origin
+  nuke-branch Removes a branch locally and on the remote origin
   undo        Undo the last commit, but don't throw away any changes
 
 Flags:

@@ -4,11 +4,8 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
 
-	"github.com/retgits/gh/util"
-
+	"github.com/retgits/gh/exec"
 	"github.com/spf13/cobra"
 )
 
@@ -16,32 +13,22 @@ import (
 var gitCommitCmd = &cobra.Command{
 	Use:   "commit",
 	Short: "A simpler alias for \"git commit -a -S -m\"",
-	Run:   runGitCommit,
+	Run:   gitCommit,
 }
 
-// Flags
 var (
 	gitCommitMessage string
 )
 
-// init registers the command and flags
 func init() {
 	rootCmd.AddCommand(gitCommitCmd)
 	gitCommitCmd.Flags().StringVar(&gitCommitMessage, "message", "", "The commit message (required)")
 	gitCommitCmd.MarkFlagRequired("message")
 }
 
-// runGitCommit is the actual execution of the command
-func runGitCommit(cmd *cobra.Command, args []string) {
-	currentDirectory, err := util.GetCurrentDirectory()
+func gitCommit(cmd *cobra.Command, args []string) {
+	err := exec.RunCmd(fmt.Sprintf("git commit -a -S -m \"%s\"", gitCommitMessage))
 	if err != nil {
-		fmt.Printf("An error occurred while resolving current directory: %s", err.Error())
-		os.Exit(2)
+		fmt.Println(err.Error())
 	}
-	cmdExec := exec.Command("sh", "-c", fmt.Sprintf("git commit -a -S -m \"%s\"", gitCommitMessage))
-	cmdExec.Stdout = os.Stdout
-	cmdExec.Stderr = os.Stderr
-	cmdExec.Dir = currentDirectory
-	fmt.Println(currentDirectory)
-	cmdExec.Run()
 }

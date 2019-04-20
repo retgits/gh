@@ -4,39 +4,24 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
 
-	"github.com/retgits/gh/util"
-
+	"github.com/retgits/gh/exec"
 	"github.com/spf13/cobra"
 )
 
-// gitAllCmd represents the all command
 var gitAllCmd = &cobra.Command{
 	Use:   "all",
 	Short: "Stage all unstaged files",
-	Run:   runGitAll,
+	Run:   gitAll,
 }
 
-// Flags
-var ()
-
-// init registers the command and flags
 func init() {
 	rootCmd.AddCommand(gitAllCmd)
 }
 
-// runGitAll is the actual execution of the command
-func runGitAll(cmd *cobra.Command, args []string) {
-	currentDirectory, err := util.GetCurrentDirectory()
+func gitAll(cmd *cobra.Command, args []string) {
+	err := exec.RunCmd("git add -A")
 	if err != nil {
-		fmt.Printf("An error occurred while resolving current directory: %s", err.Error())
-		os.Exit(2)
+		fmt.Println(err.Error())
 	}
-	cmdExec := exec.Command("sh", "-c", "git add -A")
-	cmdExec.Stdout = os.Stdout
-	cmdExec.Stderr = os.Stderr
-	cmdExec.Dir = currentDirectory
-	cmdExec.Run()
 }

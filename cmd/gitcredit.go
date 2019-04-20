@@ -4,28 +4,22 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
 
-	"github.com/retgits/gh/util"
-
+	"github.com/retgits/gh/exec"
 	"github.com/spf13/cobra"
 )
 
-// gitCreditCmd represents the credit command
 var gitCreditCmd = &cobra.Command{
 	Use:   "credit",
 	Short: "A very slightly quicker way to credit an author on the latest commit",
-	Run:   runGitCredit,
+	Run:   gitCredit,
 }
 
-// Flags
 var (
 	gitCreditName  string
 	gitCreditEmail string
 )
 
-// init registers the command and flags
 func init() {
 	rootCmd.AddCommand(gitCreditCmd)
 	gitCreditCmd.Flags().StringVar(&gitCreditName, "name", "", "The name of the author to credit (required)")
@@ -34,17 +28,9 @@ func init() {
 	gitCreditCmd.MarkFlagRequired("email")
 }
 
-// runGitCredit is the actual execution of the command
-func runGitCredit(cmd *cobra.Command, args []string) {
-	currentDirectory, err := util.GetCurrentDirectory()
+func gitCredit(cmd *cobra.Command, args []string) {
+	err := exec.RunCmd(fmt.Sprintf("git commit --amend --author \"%s <%s>\" -C HEAD", gitCreditName, gitCreditEmail))
 	if err != nil {
-		fmt.Printf("An error occurred while resolving current directory: %s", err.Error())
-		os.Exit(2)
+		fmt.Println(err.Error())
 	}
-	cmdExec := exec.Command("sh", "-c", fmt.Sprintf("git commit --amend --author \"%s <%s>\" -C HEAD", gitCreditName, gitCreditEmail))
-	cmdExec.Stdout = os.Stdout
-	cmdExec.Stderr = os.Stderr
-	cmdExec.Dir = currentDirectory
-	fmt.Println(currentDirectory)
-	cmdExec.Run()
 }

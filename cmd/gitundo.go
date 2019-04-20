@@ -4,40 +4,24 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
 
-	"github.com/retgits/gh/util"
-
+	"github.com/retgits/gh/exec"
 	"github.com/spf13/cobra"
 )
 
-// gitUndoCmd represents the undo command
 var gitUndoCmd = &cobra.Command{
 	Use:   "undo",
 	Short: "Undo the last commit, but don't throw away any changes",
-	Run:   runGitUndo,
+	Run:   gitUndo,
 }
 
-// Flags
-var ()
-
-// init registers the command and flags
 func init() {
 	rootCmd.AddCommand(gitUndoCmd)
 }
 
-// runGitUndo is the actual execution of the command
-func runGitUndo(cmd *cobra.Command, args []string) {
-	currentDirectory, err := util.GetCurrentDirectory()
+func gitUndo(cmd *cobra.Command, args []string) {
+	err := exec.RunCmd("git reset --soft HEAD^")
 	if err != nil {
-		fmt.Printf("An error occurred while resolving current directory: %s", err.Error())
-		os.Exit(2)
+		fmt.Println(err.Error())
 	}
-	cmdExec := exec.Command("sh", "-c", "git reset --soft HEAD^")
-	cmdExec.Stdout = os.Stdout
-	cmdExec.Stderr = os.Stderr
-	cmdExec.Dir = currentDirectory
-	fmt.Println(currentDirectory)
-	cmdExec.Run()
 }

@@ -22,14 +22,11 @@ A collection of git helper commands to make my life a little easier`,
 // The constants
 const (
 	// The version number of gh
-	version = "1.4.0"
+	version = "2.0.0"
 	// The name of the config file
 	ConfigName = ".ghconfig"
-	// The type of the config file
-	ConfigType = "yml"
 )
 
-// Variables used in multiple flags
 var (
 	cfgFile string
 )
@@ -69,7 +66,6 @@ func initConfig() {
 		// Search .ghconfig.yml in home directory
 		viper.AddConfigPath(home)
 		viper.SetConfigName(ConfigName)
-		viper.SetConfigType(ConfigType)
 	}
 
 	if err := viper.ReadInConfig(); err != nil {

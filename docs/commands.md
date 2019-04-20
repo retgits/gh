@@ -1,4 +1,6 @@
-# all
+# Commands
+
+## all
 
 ```bash
 Stage all unstaged files
@@ -13,7 +15,7 @@ Global Flags:
       --config string   config file (default is $HOME/.ghconfig.yml)
 ```
 
-# amend
+## amend
 
 ```bash
 Use the last commit message and amend your stuffs
@@ -28,7 +30,7 @@ Global Flags:
       --config string   config file (default is $HOME/.ghconfig.yml)
 ```
 
-# clone
+## clone
 
 ```bash
 clone makes sure repositories are cloned to a specified base directory and a predefined structure:
@@ -41,14 +43,14 @@ Usage:
   gh clone [flags]
 
 Flags:
-      --basefolder string   The root folder to clone to (this flag overrides git.basefolder from the configuration file)
+      --basefolder string   The root folder to clone to
   -h, --help                help for clone
 
 Global Flags:
       --config string   config file (default is $HOME/.ghconfig.yml)
 ```
 
-# commit
+## commit
 
 ```bash
 A simpler alias for "git commit -a -S -m"
@@ -64,7 +66,28 @@ Global Flags:
       --config string   config file (default is $HOME/.ghconfig.yml)
 ```
 
-# credit
+## create-repo
+
+```bash
+Create a repository
+
+Usage:
+  gh create-repo [flags]
+
+Flags:
+  -h, --help           help for create-repo
+      --org string     The organization to create the repo under
+      --private        Set to true to create a private repository
+      --repo string    The repository name to create
+      --token string   The Personal Access Token for the version control system
+      --type string    The version control system to use
+      --url string     The API endpoint to call
+
+Global Flags:
+      --config string   config file (default is $HOME/.ghconfig.yml)
+```
+
+## credit
 
 ```bash
 A very slightly quicker way to credit an author on the latest commit
@@ -81,76 +104,23 @@ Global Flags:
       --config string   config file (default is $HOME/.ghconfig.yml)
 ```
 
-# github
-
-```bash
-Create a GitHub repository
-
-Usage:
-  gh github [flags]
-
-Flags:
-      --ghrepo string    The repository name to create (will default to the name of the directory if not set)
-      --ghtoken string   The Personal Access Token for GitHub (this flag overrides git.ghtoken from the configuration file)
-  -h, --help             help for github
-
-Global Flags:
-      --config string   config file (default is $HOME/.ghconfig.yml)
-```
-
-# gogs
-
-```bash
-Create a Gogs repository
-
-Usage:
-  gh gogs [flags]
-
-Flags:
-      --gogsrepo string    The repository name to create (will default to the name of the directory if not set)
-      --gogstoken string   The Personal Access Token for gogs (this flag overrides git.gogstoken from the configuration file)
-      --gogsurl string     The URL of the gogs server (this flag overrides git.gogsurl from the configuration file)
-  -h, --help               help for gogs
-
-Global Flags:
-      --config string   config file (default is $HOME/.ghconfig.yml)
-```
-
-# jenkins
-
-```bash
-Create a Jenkins Job
-
-Usage:
-  gh jenkins [flags]
-
-Flags:
-      --commit               Commit and push the updates to the Jenkins DSL project
-  -h, --help                 help for jenkins
-      --jenkinsrepo string   The location of the Jenkins Job DSL project (this flag overrides git.jenkinsrepo from the configuration file)
-      --projectname string   The name of the project to create a new job for (will default to the name of the directory if not set)
-
-Global Flags:
-      --config string   config file (default is $HOME/.ghconfig.yml)
-```
-
-# nuke
+## nuke-branch
 
 ```bash
 Removes a branch locally and on the remote origin
 
 Usage:
-  gh nuke [flags]
+  gh nuke-branch [flags]
 
 Flags:
-      --branch string   The Nuke message (required)
-  -h, --help            help for nuke
+      --branch string   The branch to remove (required)
+  -h, --help            help for nuke-branch
 
 Global Flags:
       --config string   config file (default is $HOME/.ghconfig.yml)
 ```
 
-# undo
+## undo
 
 ```bash
 Undo the last commit, but don't throw away any changes

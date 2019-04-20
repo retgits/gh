@@ -4,49 +4,35 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
 
-	"github.com/retgits/gh/util"
-
+	"github.com/retgits/gh/exec"
 	"github.com/spf13/cobra"
 )
 
-// gitNukeCmd represents the nuke command
 var gitNukeCmd = &cobra.Command{
-	Use:   "nuke",
+	Use:   "nuke-branch",
 	Short: "Removes a branch locally and on the remote origin",
-	Run:   runGitNuke,
+	Run:   gitNuke,
 }
 
-// Flags
 var (
 	gitNukeBranch string
 )
 
-// init registers the command and flags
 func init() {
 	rootCmd.AddCommand(gitNukeCmd)
-	gitNukeCmd.Flags().StringVar(&gitNukeBranch, "branch", "", "The Nuke message (required)")
+	gitNukeCmd.Flags().StringVar(&gitNukeBranch, "branch", "", "The branch to remove (required)")
 	gitNukeCmd.MarkFlagRequired("branch")
 }
 
-// runGitNuke is the actual execution of the command
-func runGitNuke(cmd *cobra.Command, args []string) {
-	currentDirectory, err := util.GetCurrentDirectory()
+func gitNuke(cmd *cobra.Command, args []string) {
+	err := exec.RunCmd(fmt.Sprintf("git branch -D %s", gitNukeBranch))
 	if err != nil {
-		fmt.Printf("An error occurred while resolving current directory: %s", err.Error())
-		os.Exit(2)
+		fmt.Println(err.Error())
 	}
-	cmdExec := exec.Command("sh", "-c", fmt.Sprintf("git branch -D %s", gitNukeBranch))
-	cmdExec.Stdout = os.Stdout
-	cmdExec.Stderr = os.Stderr
-	cmdExec.Dir = currentDirectory
-	cmdExec.Run()
 
-	cmdExec = exec.Command("sh", "-c", fmt.Sprintf("git push origin :%s", gitNukeBranch))
-	cmdExec.Stdout = os.Stdout
-	cmdExec.Stderr = os.Stderr
-	cmdExec.Dir = currentDirectory
-	cmdExec.Run()
+	err = exec.RunCmd(fmt.Sprintf("git push origin :%s", gitNukeBranch))
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 }

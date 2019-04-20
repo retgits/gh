@@ -4,40 +4,24 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"os/exec"
 
-	"github.com/retgits/gh/util"
-
+	"github.com/retgits/gh/exec"
 	"github.com/spf13/cobra"
 )
 
-// gitAmendCmd represents the amend command
 var gitAmendCmd = &cobra.Command{
 	Use:   "amend",
 	Short: "Use the last commit message and amend your stuffs",
-	Run:   runGitAmend,
+	Run:   gitAmend,
 }
 
-// Flags
-var ()
-
-// init registers the command and flags
 func init() {
 	rootCmd.AddCommand(gitAmendCmd)
 }
 
-// runGitAmend is the actual execution of the command
-func runGitAmend(cmd *cobra.Command, args []string) {
-	currentDirectory, err := util.GetCurrentDirectory()
+func gitAmend(cmd *cobra.Command, args []string) {
+	err := exec.RunCmd("git commit --amend -C HEAD")
 	if err != nil {
-		fmt.Printf("An error occurred while resolving current directory: %s", err.Error())
-		os.Exit(2)
+		fmt.Println(err.Error())
 	}
-	cmdExec := exec.Command("sh", "-c", "git commit --amend -C HEAD")
-	cmdExec.Stdout = os.Stdout
-	cmdExec.Stderr = os.Stderr
-	cmdExec.Dir = currentDirectory
-	fmt.Println(currentDirectory)
-	cmdExec.Run()
 }

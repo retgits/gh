@@ -1,6 +1,7 @@
 git:
   basefolder: /bla
-  ghtoken: 1234
-  gogstoken: 1234
-  gogsurl: http://server/api/v1/user/repos
-  jenkinsrepo: /bla
+github:
+  accesstoken: ghtoken
+gogs:
+  accesstoken: gogstoken
+  apiendpoint: http://localhost/api/v1
