@@ -7,7 +7,7 @@ install:
   - make deps
 
 script:
-  - make prep
+  - make setup
   - make test
 
 deploy:
