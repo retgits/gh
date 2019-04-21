@@ -1,22 +1,42 @@
+# -----------------------------------------------------------------------------
+# Description: Travis CI buildfile
+# Author(s): retgits
+# Last updated: 2019-04-19
+# 
+# This software may be modified and distributed under the terms of the
+# MIT license. See the LICENSE file for details.
+# -----------------------------------------------------------------------------
+
+# Set language
 language: go
 
+# Set Go version
 go:
   - 1.12.x
 
+# Set environment variables
 env:
   global:
     - GO111MODULE=on
 
+# Install all dependencies
 install:
   - make deps
 
+# Run make targets
 script:
-  - make setup
   - make test
+  - make score
+  - make compile
 
+# For tagged builds, create a new release
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
   skip_cleanup: true
+  file:
+    - "out/gh-linux-amd64"
+    - "out/gh-windows-amd64.exe"
+    - "out/gh-darwin-amd64"
   on:
     tags: true

@@ -22,7 +22,7 @@ A collection of git helper commands to make my life a little easier`,
 // The constants
 const (
 	// The version number of gh
-	version = "2.0.0"
+	version = "2.0.1"
 	// The name of the config file
 	ConfigName = ".ghconfig"
 )
