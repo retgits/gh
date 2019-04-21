@@ -46,12 +46,12 @@ deps: ## Get all the Go dependencies.
 test: ## Run all testcases.
 	mkdir -p ${PWD}/test
 	mkdir -p $(GOPATH)/bin
-	go get -u golang.org/x/lint/golint
-	go get -u github.com/gojp/goreportcard/cmd/goreportcard-cli
 	env TESTDIR=${PWD}/test go test ./...
 
 .PHONY: score
 score: ## Get a score based on GoReportcard.
+	go get -u golang.org/x/lint/golint
+	go get -u github.com/gojp/goreportcard/cmd/goreportcard-cli
 	goreportcard-cli -v
 
 .PHONY: compile

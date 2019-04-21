@@ -26,6 +26,8 @@ install:
 # Run make targets
 script:
   - make test
+  - curl -L https://git.io/vp6lP | sh
+  - export PATH=`pwd`/bin:$PATH
   - make score
   - make compile
 

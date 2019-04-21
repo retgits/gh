@@ -1,6 +1,6 @@
 // Package cmd defines and implements command-line commands and flags
 // used by gh. Commands and flags are implemented using Cobra.
-package cmd_test
+package cmd
 
 import (
 	"bytes"
@@ -56,7 +56,7 @@ func TestGHWithVersion(t *testing.T) {
 		fmt.Println(err.Error())
 	}
 	stdout := outbuf.String()
-	assert.Contains(stdout, "You're running gh version 2.0.0")
+	assert.Contains(stdout, fmt.Sprintf("You're running gh version %s", version))
 	outbuf.Reset()
 	errbuf.Reset()
 }
