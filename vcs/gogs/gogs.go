@@ -4,8 +4,7 @@ package gogs
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/retgits/gh/util"
+	"strings"
 )
 
 // System contains the fields requires to connect to Gogs
@@ -27,14 +26,30 @@ func (g System) CreateRepository(name string, organization string, private bool)
 
 	httpHeader := http.Header{"Authorization": {fmt.Sprintf("token %s", g.AccessToken)}}
 
-	resp, err := util.HTTPPost(url, "application/json", payload, httpHeader)
+	resp, err := post(url, "application/json", payload, httpHeader)
 	if err != nil {
-		return err
-	}
-
-	if resp.StatusCode != 201 {
-		return fmt.Errorf("Gogs did not respond with HTTP/201\n  HTTP StatusCode %v\n  HTTP Body %v", resp.StatusCode, resp.Body)
+		return fmt.Errorf("error: Gogs did not respond with HTTP/201\n  HTTP StatusCode %v\n  HTTP Body %v", resp, err.Error())
 	}
 
 	return nil
+}
+
+func post(URL string, encoding string, postData string, header http.Header) (int, error) {
+	req, err := http.NewRequest(http.MethodPost, URL, strings.NewReader(postData))
+	if err != nil {
+		return 0, fmt.Errorf("error while creating HTTP request: %s", err.Error())
+	}
+
+	// Associate the headers with the request
+	if header != nil {
+		req.Header = header
+	}
+
+	// Execute the HTTP request
+	res, err := http.DefaultClient.Do(req)
+	if err != nil || res.StatusCode < 200 || res.StatusCode > 299 {
+		return 0, fmt.Errorf("error while performing HTTP request: %s", err.Error())
+	}
+
+	return res.StatusCode, nil
 }
