@@ -56,7 +56,7 @@ func TestGHWithVersion(t *testing.T) {
 		fmt.Println(err.Error())
 	}
 	stdout := outbuf.String()
-	assert.Contains(stdout, fmt.Sprintf("You're running gh version %s", version))
+	assert.Contains(stdout, fmt.Sprintf("You're running gh version %s", Version))
 	outbuf.Reset()
 	errbuf.Reset()
 }
