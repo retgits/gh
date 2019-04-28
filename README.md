@@ -26,6 +26,7 @@ Configuration is done using flags for the commands, or using the `.ghconfig.yml`
 
 ```yml
 git:
+  author:      ## The default author for projects (usually your GitHub name)
   basefolder:  ## The base folder to clone repositories to
 github:
   accesstoken: ## The personal access token to connect to GitHub
@@ -41,15 +42,16 @@ Usage:
   gh [command]
 
 Available Commands:
-  all         Stage all unstaged files
-  amend       Use the last commit message and amend your stuffs
-  clone       Clone a repository to a specified directory
-  commit      A simpler alias for "git commit -a -S -m"
-  create-repo Create a repository
-  credit      A very slightly quicker way to credit an author on the latest commit
-  help        Help about any command
-  nuke-branch Removes a branch locally and on the remote origin
-  undo        Undo the last commit, but don't throw away any changes
+  all            Stage all unstaged files
+  amend          Use the last commit message and amend your stuffs
+  clone          Clone a repository to a specified directory
+  commit         A simpler alias for "git commit -a -S -m"
+  create-project Create a Go project
+  create-repo    Create a repository
+  credit         A very slightly quicker way to credit an author on the latest commit
+  help           Help about any command
+  nuke-branch    Removes a branch locally and on the remote origin
+  undo           Undo the last commit, but don't throw away any changes
 
 Flags:
       --config string   config file (default is $HOME/.ghconfig.yml)

@@ -1,4 +1,5 @@
 git:
+  author: retgits
   basefolder: /bla
 github:
   accesstoken: ghtoken

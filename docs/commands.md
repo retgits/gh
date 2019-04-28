@@ -66,6 +66,24 @@ Global Flags:
       --config string   config file (default is $HOME/.ghconfig.yml)
 ```
 
+## create-project
+
+```bash
+Create a Go project
+
+Usage:
+  gh create-project [flags]
+
+Flags:
+      --author string    The author for the project (required, overrides git.author from config)
+      --base string      The base path of the project (defaults to the current directory)
+  -h, --help             help for create-project
+      --project string   The name of the project (defaults to the current directory)
+
+Global Flags:
+      --config string   config file (default is $HOME/.ghconfig.yml)
+```
+
 ## create-repo
 
 ```bash
