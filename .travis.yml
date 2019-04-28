@@ -25,20 +25,19 @@ install:
 
 # Run make targets
 script:
-  - make test
+  - make setup
   - curl -L https://git.io/vp6lP | sh
   - export PATH=`pwd`/bin:$PATH
+  - make test
   - make score
-  - make compile
+  - make build-dist
 
 # For tagged builds, create a new release
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
   skip_cleanup: true
-  file:
-    - "out/gh-linux-amd64"
-    - "out/gh-windows-amd64.exe"
-    - "out/gh-darwin-amd64"
+  file_glob: true
+  file: dist/*
   on:
     tags: true

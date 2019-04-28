@@ -21,14 +21,16 @@ A collection of git helper commands to make my life a little easier`,
 
 // The constants
 const (
-	// The version number of gh
-	version = "2.1.0"
 	// The name of the config file
 	ConfigName = ".ghconfig"
 )
 
 var (
-	cfgFile string
+	// Version number of gh
+	Version = "N/A"
+	// BuildTime of gh
+	BuildTime = "N/A"
+	cfgFile   string
 )
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -46,8 +48,8 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.ghconfig.yml)")
 
 	// Set the version and template function to render the version text
-	rootCmd.Version = version
-	rootCmd.SetVersionTemplate("\nYou're running gh version {{.Version}}\n\n")
+	rootCmd.Version = fmt.Sprintf("%s built on %s", Version, BuildTime)
+	rootCmd.SetVersionTemplate("\nYou're running gh version {{ .Version }}\n\n")
 }
 
 func initConfig() {

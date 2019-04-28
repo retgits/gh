@@ -1,6 +1,7 @@
 package templates
 
 const (
+	// Main is the main file for Go projects
 	Main = `package main
 
 import "fmt"
@@ -14,6 +15,7 @@ func main() {
 	fmt.Printf("Version: %s, Built: %s\n", Version, BuildTime)
 }`
 
+	// Dockerfile is the dockerfile for Go projects
 	Dockerfile = `FROM golang:alpine3.9
 ADD . /go/src/github.com/{{ .Author }}/{{ .Project }}
 WORKDIR /go/src/github.com/{{ .Author }}/{{ .Project }}
@@ -22,6 +24,7 @@ RUN make install
 CMD {{.Project}}
 	`
 
+	// Makefile is the makefile for Go projects
 	Makefile = `# -----------------------------------------------------------------------------
 # Description: Makefile
 # Author(s): {{ .Author }}
@@ -42,6 +45,11 @@ os_archs      := "darwin/amd64 linux/amd64 windows/amd64"
 
 # GOPROXY defines which URL to use to retrieve Go Modules from
 GOPROXY=https://gocenter.io
+
+# Sets PWD to pwd_unknown if it doesn't have a value. Normally this should not
+# happen. If you do see pwd_unknown showing up, you'll need to make sure your
+# system understand the PWD command.
+PWD ?= pwd_unknown
 
 # List all PHONY targets
 .PHONY: help build build-docker build-dist install tags list clean clean-build clean-dist deps score setup
@@ -65,8 +73,11 @@ build-docker: ## builds a docker container
 
 build-dist: ## builds executables for all environments
 	@echo "Building..."
-	$Q rm -f $(dist_dir)
-	$Q gox -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}" -osarchs="$(os_archs)" $(version_flags)
+	$Q rm -rf $(dist_dir)
+	$Q gox -output="dist/{{.Dir}}_{{.OS}}_{{.Arch}}" -osarch=$(os_archs) $(version_flags)
+
+test: ## Run all testcases.
+	env TESTDIR=${PWD}/test go test ./...
 
 # Install
 install: ## installs the executable in your GOPATH
